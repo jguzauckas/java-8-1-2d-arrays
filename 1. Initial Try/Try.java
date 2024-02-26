@@ -1,37 +1,10 @@
-import java.util.ArrayList;
-
 public class Try {
     public static void main (String[] args){
-        ArrayList<Integer> intList = new ArrayList<Integer>();
-        intList.add(7);
-        intList.add(14);
-        intList.add(5);
-        intList.add(17);
-        intList.add(0);
-        System.out.println(intList);
-
-        // This section of code is meant to sort the ArrayList using selection sort
-        for (int i = ; i < ; i++) {
-            int minimum = intList.get();
-            int indexMin = ;
-            for (int j = ; j < intList.size(); j++) {
-                if (intList.get() < minimum) {
-                    minimum = intList.get();
-                    indexMin = ;
-                }
-            }
-            intList.set(, intList.set(, intList.get()));
-        }
-        System.out.println(intList);
-
-        // This section of code is meant to search for the value 5 using linear search
-        int targetValue = 5;
-        int targetIndex = -1;
-        for (int i = ; i < ; i++) {
-            if (intList.get() == targetValue) {
-                targetIndex = ;
-            }
-        }
-        System.out.println(targetIndex);
+        String[][] strs = new String[][] {"a", "b", "c", "d", "e", "f", "g", "h", "i"}; // Should be 3 rows of 3 letters each
+        System.out.println(strs[2, 2]); // Print out the bottom right string
+        strs[1, 2]; // Set it to "z" instead of "f"
+        System.out.println(strs[1, 2]); // Print out "z" from the array
+        strs[0, 0]; // Add another "a" so that it is "aa"
+        System.out.println(strs[0, 0]) // Print out "aa" from the array
     }
 }

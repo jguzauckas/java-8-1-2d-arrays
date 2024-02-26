@@ -107,7 +107,7 @@ The notation for 2D arrays is built on the notation for our regular 1D arrays (s
 
 ### Declaring and Initializing a Default 2D Array
 
-Here is a quick example of how to initialize an array variable for `int` values from the `Notes1DArrays1.java` file:
+Here is a quick example of how to initialize an array variable for default `int` values from the `NotesDefaultInitialization1.java` file:
 
 ```java
 int[] nums = new int[5];
@@ -119,7 +119,7 @@ This uses the important square bracket notation, where you write the type, and w
 
 If we want to store an array of arrays, then we need to establish that our type is an array, followed by square brackets. Since `int[]` represents an array of `int` values, this means that `int[][]` represents an array of `int` arrays, essentially representing a table.
 
-Using this notation, we can now initialize a 2D array variable for `int` values from the `Notes2DArrays1.java` file:
+Using this notation, we can now initialize a 2D array variable for `int` values from the `NotesDefaultInitialization2.java` file:
 
 ```java
 int[][] nums = new int[5][5];
@@ -131,7 +131,7 @@ Despite it now being 2D, it still fills all of the elements in all of the arrays
 
 ### Declaring and Initializing a 2D Array with Values
 
-Here is a quick example of how to initialize an array variable with `int` values from the `Notes1DArrays2.java` file:
+Here is a quick example of how to initialize an array variable with `int` values from the `NotesInitialization1.java` file:
 
 ```java
 int[] nums = new int[] {3, 7, 2, 11, 4};
@@ -139,262 +139,187 @@ int[] nums = new int[] {3, 7, 2, 11, 4};
 
 The change from default arrays is that instead of providing an `int` value in the square brackets for the length, we just provide an **initializer list** that uses curly braces, and commas between each value.
 
-We can provide initializer lists for 2D arrays as well, with similar notation. Since we are making an array of arrays, 
+We can provide initializer lists for 2D arrays as well, with similar notation. Since we are making an array of arrays, where we would have written a number before, we write a whole 1D array initializer list.
 
+Continuing our sample 2D array from above, this is what the 1D array initializer lists look like for each of the rows.
 
+```
+{3, 7, 2, 11, 4}
+{1, 5, 8, 15, 13}
+{1, 2, 6, 5, 12}
+{2, 5, 7, 23, 9}
+{12, 10, 3, 5, 3}
+```
 
+With these in hand, our 2D array initializer list would look like this:
 
+```
+{{3, 7, 2, 11, 4}, {1, 5, 8, 15, 13}, {1, 2, 6, 5, 12}, {2, 5, 7, 23, 9}, {12, 10, 3, 5, 3}}
+```
 
+Notice that we end up with multiple curly braces, and each of our 1D initializer lists are separated by commas themselves.
 
+Using this notation, we can now initialize a 2D array variable with specific `int` values from the `NotesInitialization2.java` file:
 
-# Searching and Sorting
+```java
+int[][] nums = new int[][] {{3, 7, 2, 11, 4}, {1, 5, 8, 15, 13}, {1, 2, 6, 5, 12}, {2, 5, 7, 23, 9}, {12, 10, 3, 5, 3}};
+```
 
-Often when we store data in ArrayLists, we want to be able to look through that data and find certain values, or reorganize it to be easier to use.
+Just like our default example, this creates a 5 row, 5 column 2D array, but this time the values are specifically set. The values in the first row would be 3, 7, 2, 11, and 4.
 
 ---
 
-## Searching
+## Using 2D Arrays
 
-While there are many approaches for how to look through an `ArrayList` to find a value, in this course we will only worry about **sequential search**, also known as **linear search**.
+Just like when creating them, the notation for using (accessing, modifying, etc.) the values for 2D arrays is built on the notation that we used for 1D arrays.
 
-The idea of sequential search is straight-forward, just start at the beginning of the `ArrayList` and check each value to see if it is the one you want until you find what you are looking for, or until you have searched the entire `ArrayList` and couldn't find it.
+As discussed above when looking at tables, the primary difference is we now have two "index" values that are needed to get to an element: one for the row and one for the column.
 
-Conveniently, this is extremely similar to the algorithm we covered on identifying if there exists an element with a property. The difference now is that the "property" we are looking for is an exact value (i.e. is the number exactly 5), and instead of just saying `true`, it is there or `false` it is not there, we instead want to say where you can go to get that value if you need it.
+Here is our sample table again:
 
-Here are the basic steps:
-- Iterate over the `ArrayList`.
-    - Check if the current value is the value we want.
-        - If it is, `return` the current index.
-        - If it is not, skip it.
-- `return -1` because we did not find the value.
+```
+|---------|---------|---------|---------|---------|---------|
+|         | Index 0 | Index 1 | Index 2 | Index 3 | Index 4 |
+|---------|---------|---------|---------|---------|---------|
+| Array 0 |    3    |    7    |    2    |    11   |    4    |
+|---------|---------|---------|---------|---------|---------|
+| Array 1 |    1    |    5    |    8    |    15   |    13   |
+|---------|---------|---------|---------|---------|---------|
+| Array 2 |    1    |    2    |    6    |    5    |    12   |
+|---------|---------|---------|---------|---------|---------|
+| Array 3 |    2    |    5    |    7    |    23   |    9    |
+|---------|---------|---------|---------|---------|---------|
+| Array 4 |    12   |    10   |    3    |    5    |    3    |
+|---------|---------|---------|---------|---------|---------|
+```
 
-Here is what this could look like from the `NotesSearch1.java` file:
+To tell someone which element we would like to look at/work with, we need to tell them which 1D array we are looking at (our row), and which index in that 1D array we are looking at (our column).
+
+For example, if I told someone I was looking at row `3` and column `2`, this would represent the value `7`. Again as mentioned above, despite using the same values for the indices, looking at row `2` and column `3` is a different element of the 2D array: this time the value is `5`.
+
+### Accessing Elements
+
+Here is a quick example of how we would access a specific element in a 1D array from the `NotesAccess1.java` file:
 
 ```java
-public static int linearSearch(ArrayList<Double> doubleList, double targetValue) {
-    for (int i = 0; i < doubleList.size(); i++) {
-        if (doubleList.get(i) == targetValue) {
-            return i;
-        }
-    }
-    return -1;
-}
+int[] nums = new int[] {3, 7, 2, 11, 4};
+System.out.println(nums[1]);
+System.out.println(nums[3]);
 ```
 
-Since objects are slightly different, here is an example with `String` objects from the `NotesSearch2.java` file:
+This sample would print out the values `7` and `11`. By providing the index of the element we want in the square brackets, it accesses and gives us the value stored in that index.
+
+This is going to be very similar for 2D arrays, except now we have two square brackets and therefore two indices (our row and column that we looked at above). The first square bracket will represent the row index and the second square bracket will represent the column index.
+
+Here is what this would look like for 2D arrays from the `NotesAccess2.java` file:
 
 ```java
-public static int linearSearch(ArrayList<String> strList, String targetValue) {
-    for (int i = 0; i < strList.size(); i++) {
-        if (strList.get(i).equals(targetValue)) {
-            return i;
-        }
-    }
-    return -1;
-}
+int[][] nums = new int[][] {{3, 7, 2, 11, 4}, {1, 5, 8, 15, 13}, {1, 2, 6, 5, 12}, {2, 5, 7, 23, 9}, {12, 10, 3, 5, 3}};
+System.out.println(nums[3][2]);
+System.out.println(nums[2][3]);
 ```
 
-Note that the return type `int` did not change between the two examples, since we are always returning an index, which is always an `int`.
+This shows our example earlier was correct by printing `7` first (for row `3` and column `2`), and then `5` (for row `2` and column `3`).
 
----
+### Modifying Elements
 
-## Sorting
-
-Sorting is mainly applicable to numerical values, though can be applied to numerical instance variables of objects (i.e., we can sort people by their age or `String` objects by their length).
-
-We will be looking at two different algorithms for sorting: **selection sort** and **insertion sort**.
-
-### Selection Sort
-
-Selection sort is the simpler, yet less efficient of the two sorting algorithms we will look at.
-
-We divide the list into sorted and unsorted sections. At first, just the first element of the list is considered "sorted" and everything to the right of it is considered "unsorted".
-
-The premise of selection sort is that if we want to get numbers in order, we can keep finding the smallest number in the "unsorted" part of the list, and swap it with the front-most value of the "unsorted" list, making it the last value in the "sorted" part of the list, and making the "unsorted" part smaller, until we've moved all the way through the `ArrayList`.
-
-Here is a visual of what selection sort does:
-
-```
-3, 2, 9, 8, 6
-
-Minimum --> 2
-Swap 2 with the front value (3)
-2, 3, 9, 8, 6
-
-Minimum --> 3
-Swap 3 with the front of the remaining values (3 was already at the front of them)
-2, 3, 9, 8, 6
-
-Minimum --> 6
-Swap 6 with the front of the remaining values
-2, 3, 6, 8, 9
-
-Minimum --> 8
-Swap 8 with the front of the remaining values (8 was already at the front of them)
-2, 3, 6, 8, 9
-
-Last value must already be in the right position
-2, 3, 6, 8, 9
-```
-
-The general algorithm follows these steps:
-- Iterate over the ArrayList:
-    - Find the minimum value from your current slot to the end of the ArrayList.
-    - Swap the minimum value from its current position to the current slot.
-
-Here is what this would look like in the `NotesSelectionSort1.java` file:
+Here is a quick example of how we would modify a specific element in a 1D array from the `NotesAccess1.java` file:
 
 ```java
-public static void selectionSort(ArrayList<Integer> intList) {
-    for (int i = 0; i < intList.size() - 1; i++) {
-        int minimum = intList.get(i);
-        int indexMin = i;
-        for (int j = i; j < intList.size(); j++) {
-            if (intList.get(j) < minimum) {
-                minimum = intList.get(j);
-                indexMin = j;
-            }
-        }
-        intList.set(i, intList.set(indexMin, intList.get(i)));
-    }
-}
+int[] nums = new int[] {3, 7, 2, 11, 4};
+nums[2] = 5;
+System.out.println(nums[2]);
+nums[4] -= 1;
+System.out.println(nums[4]);
+nums[1] *= nums[0];
+System.out.println(nums[1]);
 ```
 
-We can better understand the algorithm by separating finding the minimum in the rest of the list as its own method. Here is what this would look like from the `NotesSelectionSort2.java` file:
+When it comes to modifying a 1D array value, we can just use the square bracket and index to get the correct position, and then use assignment (`=`) to change the value:
+- This can be simple like just assigning a new value `5` to index `2` (overwriting the value `2` that had been there). Therefore, the first number it prints is `5`.
+- It can be more complex and modify based on its current value, like substracting `1` from the current value at index `4` (this does `4 - 1` and stores `3` as the result). Therefore, the second number it prints is `3`.
+- The most complex would be modifying based on its current value and the value from other parts of the array, like multiplying the current value at index `1` by the current value at index `0` and saving that result to index `1` (this does `7 * 3` and stores `21` as the result). Therefore, the third number it prints is `21`.
+
+Modifying values in a 2D array is fundamentally the same, we just need two square brackets and indices to access the right place to begin with.
+
+Here is what this would look like for 2D arrays from the `NotesAccess2.java` file:
 
 ```java
-public static int findMinimum(ArrayList<Integer> intList, int start) {
-    int minimum = intList.get(start);
-    int index = start;
-    for (int i = start; i < intList.size(); i++) {
-        if (intList.get(i) < minimum) {
-            minimum = intList.get(i);
-            index = i;
-        }
-    }
-    return index;
-}
-
-public static void selectionSort(ArrayList<Integer> intList) {
-    for (int i = 0; i < intList.size() - 1; i++) {
-        int indexMin = findMinimum(intList, i);
-        intList.set(i, intList.set(indexMin, intList.get(i)));
-    }
-}
+int[][] nums = new int[][] {{3, 7, 2, 11, 4}, {1, 5, 8, 15, 13}, {1, 2, 6, 5, 12}, {2, 5, 7, 23, 9}, {12, 10, 3, 5, 3}};
+nums[1][4] = 5;
+System.out.println(nums[1][4]);
+nums[3][1] += 6;
+System.out.println(nums[3][1]);
+nums[2][2] /= nums[1][0]; 
+System.out.println(nums[2][2]);
 ```
 
-Interestingly, finding the minimum value for this sorting process is a little bit more complex than it was before, as we need to keep track both of the minimum value and the index we found it at, and the problem really cares more about the index than the value itself.
+Can you predict what happens and what it should print?
+- The first value it prints is `5`. The value at `[1][4]` is `13`, which is overwritten with the value `5`.
+- The second value it prints is `11`. The value at `[3][1]` is `5`, which has `6` added to it to get `11`.
+- The third value it prints is `6`. The value at `[2][2]` is `6`, which is divided by the value at `[1][0]` which is `1`, to get `6` and saves to the position `[2][2]`.
 
-### Insertion Sort
+### Length
 
-Insertion sort is a bit more complex than selection sort, but comes with better efficiency (produces the same result faster).
+1D arrays have a property called `length` that tells us how many elements are stored in the array.
 
-We again divide the list into sorted and unsorted sections.
-
-This time though, we take the left-most value in the "unsorted" list and sort it into the "sorted" portion of the list by moving left until it belongs (it is less than or equal to the value to the right and greater than or equal to the value to the left).
-
-Here is a visual of what insertion sort does:
-
-```
-3, 2, 9, 8, 6
-
-Current Value --> 2
-2 needs to move all the way to the left since it is less than 3.
-2, 3, 9, 8, 6
-
-Current Value --> 9
-9 does not need to move since it is greater than 3 (the first thing to its left).
-2, 3, 9, 8, 6
-
-Current Value --> 8
-8 needs to move one position to the left since it is less than 9, but is greater than 3.
-2, 3, 8, 9, 6
-
-Current Value --> 6
-6 needs to move two positions to the left since it is less than 8, but is greater than 3.
-2, 3, 6, 8, 9
-```
-
-This algorithm essentially treats values to the left of the current element as already sorted, and values to the right as unsorted, so it sorts the current element into the sorted left side of the list, and now the left side is one larger, and it slowly grows until the whole list is sorted.
-
-The general algorithm follows these steps:
-- Iterate over the ArrayList:
-    - Find and save the index of the left-most position the current value can go without being less than anything to its left.
-    - Remove the current value and insert it to the left-most position found.
-
-Here is what this would look like in the `NotesInsertionSort1.java` file:
+Here is a quick example of how we would get the length of a 1D array from the `NotesLength1.java` file:
 
 ```java
-public static void insertionSort(ArrayList<Integer> intList) {
-    for (int i = 1; i < intList.size(); i++) {
-        int index = i - 1;
-        while (index >= 0 && intList.get(index) > intList.get(i)) {
-            index--;
-        }
-        intList.add(index + 1, intList.remove(i));
-    }
-}
+int[] nums = new int[] {3, 7, 2, 11, 4};
+System.out.println(nums.length);
 ```
 
----
+This prints the value `5`, since there are `5` numbers stored in the array. Remember that the `length` has a specific relationship with our indices, which is that indices go from `0` to `length - 1`. So for this array, the valid indices go from `0` to `5 - 1 = 4`.
 
-## Informal Runtime Comparisons
+It would seem intuitive then, that when we ask a 2D array for its length, it tells us how many total values the table stores, but this doesn't work out.
 
-We can compare the efficiency of two algorithms by counting how many times given lines of code are executed, referred to as **statement execution counts** to get a sense of **informal runtime comparisons**. If one algorithm has much lower statement execution counts, it could be considered more efficient.
-
-We can compare the efficiency of our two sorting algorithms by providing an example `ArrayList` for them to run on and counting how many times key statements are executed. Let's use the sample `ArrayList` `[5, 2, 4, 6]` with both sorting algorithms:
-
-### Selection Sort
-
-Here is the algorithm from the `NotesSelectionSort1.java` file:
+As a quick example from the `NotesLength2.java` file:
 
 ```java
-public static void selectionSort(ArrayList<Integer> intList) {
-    for (int i = 0; i < intList.size() - 1; i++) {
-        int minimum = intList.get(i);
-        int indexMin = i;
-        for (int j = i + 1; j < intList.size(); j++) {
-            if (intList.get(j) < minimum) { // Statement
-                minimum = intList.get(j);
-                indexMin = j;
-            }
-        }
-        intList.set(i, intList.set(indexMin, intList.get(i)));
-    }
-}
+int[][] nums = new int[][] {{3, 7, 2, 11, 4}, {1, 5, 8, 15, 13}, {1, 2, 6, 5, 12}, {2, 5, 7, 23, 9}, {12, 10, 3, 5, 3}};
+System.out.println(nums.length);
 ```
 
-Running this algorithm with `intList` being `[5, 2, 4, 6]`, we count how many times the line marked with the comment `// Statement` is executed!
+This prints out the value `5`, even though we know that this table stores `25` numbers (`5` rows times `5` columns is `25` cells).
 
-When the first element `5` is chosen, we evalute the `if` statement for the values `2`, `4`, and `6`, so `3` times. Then the value `2` gets shifted left so the element `5` gets chosen again, and we evalute the `if` statement for the values `4`, and `6`, so `2` times. Then the value `4` gets shifted left, so the element `5` gets chosen again, and we evalute the `if` statement for the value `6`, so `1` time.
+So why is it printing `5`? This comes back to the premise of what 2D arrays are: an array of arrays. When we ask a 2D array for its `length`, it tells us how many things it stores. Since a 2D array is an array that stores many 1D arrays, `length` tells us how many 1D arrays it stores, which in this case is `5`. This, in effect, tells us how many rows our 2D array has.
 
-Our statement execution count total was `3 + 2 + 1 = 6`.
+Well, if our goal is to say how many total elements it stores, then it seems all we need now is to get the number of columns, and then we can multiple rows and columns to get our answers. How do we get the number of columns?
 
-### Insertion Sort
+If the length of a 2D array tells us the number of rows/1D arrays, then if we could just get a hold of one of the 1D arrays and ask it for its length, that would be the number of columns.
 
-Here is the algorithm from the `NotesInsertionSort1.java` file:
+Oddly enough with 2D arrays, we can use just one square bracket and an index instead of two, and this gives us a whole row of the 2D array, which is just a 1D array. It is important to note that since our 2D arrays are rectangular, it doesn't matter which row we get access to, any row will work. Due to this, we typically just take the first row (index `0`).
+
+Here is what this would look like from the `NotesLength3.java` file:
 
 ```java
-public static void insertionSort(ArrayList<Integer> intList) {
-    for (int i = 1; i < intList.size(); i++) {
-        int index = i - 1;
-        while (index >= 0 && intList.get(index) > intList.get(i)) { // Statement
-            index--;
-        }
-        intList.add(index + 1, intList.remove(i));
-    }
-}
+int[][] nums = new int[][] {{3, 7, 2, 11, 4}, {1, 5, 8, 15, 13}, {1, 2, 6, 5, 12}, {2, 5, 7, 23, 9}, {12, 10, 3, 5, 3}};
+System.out.println(nums[0].length);
 ```
 
-Running this algorithm with `intList` being `[5, 2, 4, 6]`, we count how many times the line marked with the comment `// Statement` is executed!
+This again prints the value `5`, but that's because that is how many values are stored in the first row (the 1D array `{3, 7, 2, 11, 4}`).
 
-When the first element `2` is chosen (this algorithm starts at index `1`), we evalute the `while` statement for the value `5`, so `1` time. Then the value `2` gets shifted left so the element `4` gets chosen, and we evalute the `while` statement for the values `5`, and `2`, so `2` times. Then the value `4` gets shifted left, so the element `6` gets chosen, and we evalute the `while` statement for the value `5`, so `1` time.
+So now we can combine these two things to state the number of rows, number of columns, and number of total values that a 2D array can store.
 
-Our statement execution count total was `1 + 2 + 1 = 4`.
+Here is an example of this with a different-sized 2D array from the `NotesLength4.java` file:
 
-### Outcome
+```java
+int[][] nums = new int[7][11];
+System.out.println("Number of Rows: " + nums.length);
+System.out.println("Number of Columns: " + nums[0].length);
+System.out.println("Number of Values: " + (nums.length * nums[0].length));
+```
 
-Informally, this suggests that insertion sort is more efficient than selection sort, as it ran our statement less times. The statements here were purposely picked to be run the most out of any sections of the algorithms.
+This prints the following result:
+
+```
+Number of Rows: 7
+Number of Columns: 11
+Number of Values: 77
+```
+
+The ability to get the number of rows and columns separately is going to be critical to our work in the next section as we cover traversal of 2D arrays.
 
 ---
 

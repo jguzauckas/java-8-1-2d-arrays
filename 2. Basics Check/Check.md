@@ -1,7 +1,13 @@
 # Basics Check
 
-In `Check.java`, there is some code that fills a `Double` `ArrayList` with random values between `0.0` and `100.0` (including `0.0`, not including `100.0`). 
+Create a 2D array of `boolean` values that stores this table:
 
-Use insertion sort to sort the `ArrayList`. Print the list before and after to make sure it works properly.
+```
+true    false   true
+false   true    false
+true    true    false
+```
+
+Then, individually print out the four corner values of the 2D array.
 
 Once you have gotten to just warnings, save the Java file and commit and push your changes via GitHub Desktop.
