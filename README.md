@@ -8,7 +8,7 @@ This section covers the following material:
 
 - 1-Dimensional
 - 2-Dimensional
-- 2-Dimensions in Java
+- 2 Dimensions in Java
 - Implementing 2D Arrays
     - Declaring and Initializing a Default 2D Array
     - Declaring and Initializing a 2D Array with Values

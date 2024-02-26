@@ -43,7 +43,7 @@ Notice that no two "cells" of the table will have exactly the same identifier. T
 
 ---
 
-## 2-Dimensions in Java
+## 2 Dimensions in Java
 
 So how do we store a table of values in Java? As you might be able to tell from the name of the unit and section, we still use arrays to do this. How can arrays store things in both 1 dimension and 2 dimensions?
 
